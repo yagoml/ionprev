@@ -28,12 +28,9 @@
 
 <script>
 export default {
-	props: {
-		fileData: {
-			type: Array,
-			default() {
-				return []
-			}
+	computed: {
+		fileData() {
+			return this.$store.getters.fileData
 		}
 	}
 }

@@ -2,8 +2,18 @@
 	<div class="file-upload">
 		<form enctype="multipart/form-data">
 			<label for="csvFile">Arquivo CSV:</label>&nbsp;
-			<input type="file" name="csvFile" @change="onFileChange" />
-			<button type="reset" @click="resetFile()" v-show="fileData.length">Remover</button>
+			<input
+				type="file"
+				name="csvFile"
+				@change="onFileChange"
+				accept=".csv, text/csv"
+				ref="fileInput"
+			/>
+			<button
+				type="reset"
+				@click="resetFile()"
+				v-show="fileData.length"
+			>Remover</button>
 		</form>
 	</div>
 </template>
@@ -12,6 +22,7 @@
 export default {
 	data() {
 		return {
+			acceptedExtensions: ['csv'],
 			fileData: []
 		}
 	},
@@ -19,7 +30,9 @@ export default {
 		onFileChange(e) {
 			const files = e.target.files || e.dataTransfer.files
 			if (!files.length) return
-			this.createInput(files[0])
+			if (this.checkFile(files[0])) {
+				this.createInput(files[0])
+			}
 		},
 		createInput(file) {
 			const reader = new FileReader()
@@ -48,6 +61,19 @@ export default {
 		resetFile() {
 			this.fileData = []
 			this.$emit('fileProcessed', this.fileData)
+		},
+		checkFile(file) {
+			const extension = file.name
+				.split('.').pop().toLowerCase()
+
+			if (!this.acceptedExtensions.includes(extension)) {
+				alert('Arquivo incompatível.')
+				this.$refs.fileInput.value = null
+				this.resetFile()
+				return false
+			}
+
+			return true
 		}
 	}
 }
