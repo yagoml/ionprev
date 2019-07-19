@@ -17,7 +17,7 @@ export default {
 	},
 	methods: {
 		showData(fileData) {
-			this.$store.commit('setFileData', fileData)
+			this.$store.dispatch('saveFileData', fileData)
 		}
 	}
 }
