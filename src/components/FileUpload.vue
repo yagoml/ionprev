@@ -55,12 +55,13 @@ export default {
 				}
 
 				this.fileData.push(result)
-				this.$emit('fileProcessed', this.fileData)
 			}
+
+			this.$emit('fileProcessed', this.fileData)
 		},
 		resetFile() {
 			this.fileData = []
-			this.$emit('fileProcessed', this.fileData)
+			this.$store.commit('setFileData', this.fileData)
 		},
 		checkFile(file) {
 			const extension = file.name

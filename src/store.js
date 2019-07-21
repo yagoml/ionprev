@@ -8,7 +8,9 @@ Vue.use(Vuex)
 
 const state = {
 	fileData: {},
-	users: []
+	users: [],
+	companies: [],
+	reportCompany: []
 }
 
 const mutations = {
@@ -17,11 +19,17 @@ const mutations = {
 	},
 	setUsers(state, users) {
 		state.users = users
+	},
+	setCompanies(state, companies) {
+		state.companies = companies
+	},
+	setReportCompany(state, data) {
+		state.reportCompany = data
 	}
 }
 
 const actions = {
-	getUsers(context, data) {
+	getUsers(context) {
 		Request.get({
 			route: `${ SERVER_URL }users`,
 			data: null,
@@ -30,15 +38,27 @@ const actions = {
 		})
 	},
 	saveFileData(context, data) {
-		context.commit('setFileData', data)
-
 		Request.post({
 			route: `${ SERVER_URL }files/save`,
 			data: data,
-			callback: (res) => {
-				console.log(res)
-			}
-				
+			callback: (res) =>
+				context.commit('setFileData', data)
+		})
+	},
+	getCompanies(context) {
+		Request.get({
+			route: `${ SERVER_URL }companies`,
+			data: null,
+			callback: (companies) =>
+				context.commit('setCompanies', companies)
+		})
+	},
+	reportCompany(context, data) {
+		Request.post({
+			route: `${ SERVER_URL }companies/reports`,
+			data: data,
+			callback: (responseData) =>
+				context.commit('setReportCompany', responseData)
 		})
 	}
 }
@@ -47,7 +67,9 @@ export default new Vuex.Store({
 	state,
 	getters: {
 		fileData: state => state.fileData,
-		users: state => state.users
+		users: state => state.users,
+		companies: companies => state.companies,
+		reportCompany: reportCompany => state.reportCompany
 	},
 	mutations,
 	actions
