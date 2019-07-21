@@ -1,6 +1,6 @@
 <template>
 <div>
-	<table>
+	<table v-if="users.length">
 		<tr>
 			<th>ID</th>
 			<th>Nome</th>

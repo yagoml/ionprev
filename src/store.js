@@ -10,7 +10,10 @@ const state = {
 	fileData: {},
 	users: [],
 	companies: [],
-	reportCompany: []
+	reportCompany: [],
+	topActions: {},
+	topAccess: {},
+	companiesActions: []
 }
 
 const mutations = {
@@ -25,6 +28,15 @@ const mutations = {
 	},
 	setReportCompany(state, data) {
 		state.reportCompany = data
+	},
+	setTopActions(state, topActions) {
+		state.topActions = topActions
+	},
+	setTopAccess(state, topAccess) {
+		state.topAccess = topAccess
+	},
+	setCompaniesActions(state, companiesActions) {
+		state.companiesActions = companiesActions
 	}
 }
 
@@ -60,6 +72,30 @@ const actions = {
 			callback: (responseData) =>
 				context.commit('setReportCompany', responseData)
 		})
+	},
+	getTopActions(context) {
+		Request.get({
+			route: `${ SERVER_URL }users/topActions`,
+			data: null,
+			callback: (topActions) =>
+				context.commit('setTopActions', topActions)
+		})
+	},
+	getTopAccess(context) {
+		Request.get({
+			route: `${ SERVER_URL }users/topAccess`,
+			data: null,
+			callback: (topAccess) =>
+				context.commit('setTopAccess', topAccess)
+		})
+	},
+	getCompaniesActions(context) {
+		Request.get({
+			route: `${ SERVER_URL }companies/actions`,
+			data: null,
+			callback: (companiesActions) =>
+				context.commit('setCompaniesActions', companiesActions)
+		})
 	}
 }
 
@@ -68,8 +104,11 @@ export default new Vuex.Store({
 	getters: {
 		fileData: state => state.fileData,
 		users: state => state.users,
-		companies: companies => state.companies,
-		reportCompany: reportCompany => state.reportCompany
+		companies: state => state.companies,
+		reportCompany: state => state.reportCompany,
+		topActions: state => state.topActions,
+		topAccess: state => state.topAccess,
+		companiesActions: state => state.companiesActions
 	},
 	mutations,
 	actions
