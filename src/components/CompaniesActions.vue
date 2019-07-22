@@ -8,7 +8,7 @@
 		<tbody>
 			<tr v-for="(companyAction, index) in companiesActions" :key="index">
 				<td>{{ companyAction.name }}</td>
-				<td>{{ companyAction.event_name }}</td>
+				<td>{{ companyAction.actions }}</td>
 			</tr>
 		</tbody>
 	</table>
